@@ -1,6 +1,3 @@
-import yfinance as yf
-import matplotlib.pyplot as plt
-import datetime
 import logging
 from config import Config
 import llama
@@ -29,6 +26,7 @@ def LLM():
             You should provide your own predictions on the future stock market.
             You should provide more information on the stock market.
             Provide short answers but enough information
+            
         """.strip().replace("\n", " ")
 
         logging.info("System message: %s", systemMessage)
