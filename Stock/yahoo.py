@@ -5,9 +5,13 @@ import datetime
 import logging
 from config import Config
 import llama
+import torch
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Global variables
 chat_history = []
+i = 0
 
 # TODO: Implement user interface for managing multiple stock market simulations concurrently(two lines in a graph)
 def plot_stock_price(stock_symbol):
@@ -29,6 +33,7 @@ def plot_stock_price(stock_symbol):
 
     
     #TODO: Modifying the system_meassage
+    #FIXME: Looping problem with systemMessage and message
     
     def chat(text):
         nonlocal stock_symbol
@@ -36,7 +41,10 @@ def plot_stock_price(stock_symbol):
         print("Question: " + message)
         text_box.set_val("")
         systemMessage = """
-            You are a cute capybara
+            Your name is CapybaraAI. 
+            Always introduce yourself first. 
+            Behave yourself like a capybara but still answer like a Llama.
+            You are a stock advisor for United State stock market.
         """.strip().replace("\n", " ")
 
         logging.info("System message: %s", systemMessage)
@@ -55,15 +63,13 @@ def plot_stock_price(stock_symbol):
                 },
                 ])
             response_message = response['message']['content']
-            chat_history.append(response_message)  # Store the response in chat history
-            print("Capybara:" + response_message)
+            chat_history.append(response_message)
+            # print("Capybara:" + response_message)
 
-            # Print only the second answer in the terminal
             if len(chat_history) >= 2:
-                print("Second Answer:", chat_history[1])  # Print the second answer
-
-        # Clear the chat history after printing the second answer
-            chat_history.clear()
+                print("Capybara:", chat_history[1])
+                chat_history.clear()
+            
         except Exception:
             logging.error("Failed to generate response for message: %s", message, exc_info=True)
     

@@ -5,7 +5,7 @@ from dataclasses import dataclass
 class Config:
     ollamaHost: str = "172.22.45.57"  # Use 172.22.45.57 for llama within WSL FIXME: VPN
     ollamaPort: str = "11434"
-    ollamaModelName: str = 'CapybaraAI'
+    ollamaModelName: str = 'llama2:13b'
     ollamaModelContextSize: int =  512
     databseURL: str = 'mongodb://localhost:27017'
     

@@ -9,6 +9,9 @@ client = MongoClient(connection_string)
 db = client.Eajun
 collection = db["textData"]
 
+# Create a text index on the "keywords" field
+collection.create_index([("keywords", "text")])
+
 # Perform a text search query
 search_query = "Who"  # Simple search query for testing
 search_result = collection.find({"$text": {"$search": search_query}})
