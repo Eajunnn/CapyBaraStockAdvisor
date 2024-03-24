@@ -12,7 +12,6 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 chat_history = []
 i = 0
 
-# TODO: Display multiple stock market simulations concurrently (two lines in a graph)
 #TODO: Refactor lines
 #TODO: Try to combine LLM with graph
 def plot_stock_price(stock_symbol1, stock_symbol2):
