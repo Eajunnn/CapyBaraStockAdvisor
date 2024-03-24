@@ -17,8 +17,8 @@ plt.style.use('seaborn-darkgrid')
 #TODO: Try to combine LLM with graph
 def plot_stock_price(stock_symbol1, stock_symbol2):
     times = []
-    prices1 = []
-    prices2 = []
+    prices = [prices1, prices2]
+    # prices2 = []
 
     # Initial plot
     plt.ion()  # Turn on interactive mode
