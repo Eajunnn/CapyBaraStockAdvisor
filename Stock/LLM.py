@@ -9,7 +9,7 @@ import torch
 # Set CUDA device if available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-#TODO: The latency is too HIGH
+#TODO: The latency is too HIGH(Change to GPU)
 #FIXME: The words are not coming out when generating
 def LLM():
     # Set the CUDA device for PyTorch
