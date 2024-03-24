@@ -1,6 +1,5 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
-from matplotlib.widgets import TextBox
 import datetime
 import logging
 from config import Config
@@ -13,10 +12,13 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 chat_history = []
 i = 0
 
-# TODO: Implement user interface for managing multiple stock market simulations concurrently(two lines in a graph)
-def plot_stock_price(stock_symbol):
+# TODO: Display multiple stock market simulations concurrently (two lines in a graph)
+#TODO: Refactor lines
+#TODO: Try to combine LLM with graph
+def plot_stock_price(stock_symbol1, stock_symbol2):
     times = []
-    prices = []
+    prices1 = []
+    prices2 = []
 
     # Initial plot
     plt.ion()  # Turn on interactive mode
@@ -24,99 +26,63 @@ def plot_stock_price(stock_symbol):
     ax.set_title("Stock Price Over Time")
     ax.set_xlabel("Time")
     ax.set_ylabel("Price")
-    line, = ax.plot(times, prices)
-
-    # CHATBOX
-    text_box_ax = plt.axes([0.1, 0.01, 0.8, 0.05])
-    text_box = TextBox(text_box_ax, 'ChatBox')
-
-
+    line1, = ax.plot(times, prices1, label= stock_symbol1)
+    line2, = ax.plot(times, prices2, label= stock_symbol2)
+    ax.legend()  # Show legend for line labels
     
-    #TODO: Modifying the system_meassage
-    #FIXME: Looping problem with systemMessage and message
-    
-    def chat(text):
-        nonlocal stock_symbol
-        message = text
-        print("Question: " + message)
-        text_box.set_val("")
-        systemMessage = """
-            Your name is CapybaraAI. 
-            Always introduce yourself first. 
-            Behave yourself like a capybara but still answer like a Llama.
-            You are a stock advisor for United State stock market.
-        """.strip().replace("\n", " ")
+    plt.show()  # Display the initial plot
 
-        logging.info("System message: %s", systemMessage)
-        print("CapyBara generating...")
-
-        # Llama generate response here
-        try:
-            response = llama.chat(model= Config.ollamaModelName, messages=[
-                {
-                    'role': 'system',
-                    'content': systemMessage,
-                },
-                {
-                    'role': 'system',
-                    'content': message,  
-                },
-                ])
-            response_message = response['message']['content']
-            chat_history.append(response_message)
-            # print("Capybara:" + response_message)
-
-            if len(chat_history) >= 2:
-                print("Capybara:", chat_history[1])
-                chat_history.clear()
-            
-        except Exception:
-            logging.error("Failed to generate response for message: %s", message, exc_info=True)
-    
-    text_box.on_submit(chat)
-    
     while True:
-        # Extracting the market price
-        share_info = yf.Ticker(stock_symbol).info
-
+        # Extracting the market prices
+        share_info1 = yf.Ticker(stock_symbol1).info
+        share_info2 = yf.Ticker(stock_symbol2).info
+        
         # Try accessing different keys for market price
         market_price_keys = ['regularMarketPrice', 'currentPrice', 'lastPrice']
-        market_price = None
+        market_price1 = None
+        market_price2 = None
         for key in market_price_keys:
-            if key in share_info:
-                market_price = share_info[key]
+            if key in share_info1:
+                market_price1 = share_info1[key]
+            if key in share_info2:
+                market_price2 = share_info2[key]
+            if market_price1 and market_price2:
                 break
 
-        if market_price is None:
+        if market_price1 is None or market_price2 is None:
             print("Market price not found in available keys.")
             break
 
         current_time = datetime.datetime.now()
         times.append(current_time)
-        prices.append(market_price)
+        prices1.append(market_price1)
+        prices2.append(market_price2)
 
-        # Limit the number of data points to display(change if you want to)
-        max_display_points = 50
+        # Limit the number of data points to display (change if you want to)
+        max_display_points = 500
         if len(times) > max_display_points:
             times = times[-max_display_points:]
-            prices = prices[-max_display_points:]
+            prices1 = prices1[-max_display_points:]
+            prices2 = prices2[-max_display_points:]
 
         # Update the plot
-        line.set_xdata(times)
-        line.set_ydata(prices)
-        
-        # Set y-axis limits based on min and max prices in the data
-        min_price = min(prices)
-        max_price = max(prices)
-        padding = 1 
-        ax.set_ylim(min_price - padding, max_price + padding)
+        line1.set_xdata(times)
+        line1.set_ydata(prices1)
+        line2.set_xdata(times)
+        line2.set_ydata(prices2)
+
+        buffer_zone = 100  # Adjust buffer zone as needed (The space above and below line)
+        min_price = min(min(prices1), min(prices2)) - buffer_zone
+        max_price = max(max(prices1), max(prices2)) + buffer_zone
+        ax.set_ylim(min_price, max_price)
 
         ax.relim()
         ax.autoscale_view()
-        
+
         plt.draw()
-        plt.pause(1)  # Update every 1 second(change if you want to)
+        plt.pause(1)  # Update every 1 second (change if you want to)
 
 if __name__ == "__main__":
-    stock_symbol = input("Enter stock symbol: ")
-    plot_stock_price(stock_symbol)
+    stock_symbol1 = input("Enter stock symbol for Simulation 1: ")
+    stock_symbol2 = input("Enter stock symbol for Simulation 2: ")
+    plot_stock_price(stock_symbol1, stock_symbol2)
