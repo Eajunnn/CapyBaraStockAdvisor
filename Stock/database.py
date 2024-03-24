@@ -6,6 +6,8 @@ connection_string = "mongodb+srv://eajun:eajun030802@cluster0.ktfe47o.mongodb.ne
 # Initialize the MongoClient with your connection string
 client = MongoClient(connection_string)
 
+#FIXME: Cannot get the text
+
 db = client.Eajun
 collection = db["textData"]
 

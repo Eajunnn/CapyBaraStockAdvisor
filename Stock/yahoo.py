@@ -11,8 +11,9 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # Global variables
 chat_history = []
 i = 0
+plt.style.use('seaborn-darkgrid')
 
-#TODO: Refactor lines so it can show multiple lines(not only 2)
+#TODO: Refactor lines so it can show multiple lines(Not only 2 lines)
 #TODO: Try to combine LLM with graph
 def plot_stock_price(stock_symbol1, stock_symbol2):
     times = []
