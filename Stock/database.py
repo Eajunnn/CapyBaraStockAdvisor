@@ -15,9 +15,11 @@ collection = db["textData"]
 collection.create_index([("keywords", "text")])
 
 # Perform a text search query
-search_query = "Who"  # Simple search query for testing
+search_query = "Who are you"  # Simple search query for testing
 search_result = collection.find({"$text": {"$search": search_query}})
-
+result = collection.find_one({"keywords": search_query})
+if result:
+    print(result['answer'])
 matching_count = collection.count_documents({"$text": {"$search": search_query}})
 
 if matching_count > 0:
