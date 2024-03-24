@@ -1,0 +1,6 @@
+pip install bytewax
+pip install websocket
+pip install schedule
+pip install websocket-client
+pip install yfinance
+API KEY = DO0B7FSFJMV4EO95
