@@ -1,5 +1,6 @@
+# (´㉨`) CapyBara Stock Advisor
 
-# 🦫 CapyBara Stock Advisor
+![CapyBaraStockAdvisor](capy_stonk.webp)
 
 CapyBara Stock Advisor is a Python-based application that provides stock recommendations by integrating language models and financial data from Yahoo Finance. 📈📊
 
