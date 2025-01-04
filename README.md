@@ -54,6 +54,11 @@ CapyBara Stock Advisor combines the capabilities of language models and Yahoo Fi
 
 3. 🧠 **Natural Language Processing**: Language models interpret and analyze the financial data to generate human-readable stock recommendations.
 
+## 🔍 Demo
+
+https://github.com/user-attachments/assets/529737a5-ce0e-4c50-a77e-7f2664b29c4a
+
+
 ## 🤝 Contributing
 
 Contributions are welcome! 🛠️ Please fork the repository and create a pull request with your enhancements.
